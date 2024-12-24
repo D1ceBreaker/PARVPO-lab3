@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+<body>
+    <h1>Products</h1>
+    <a href="{{ url_for('create_product') }}">Create Product</a>
+    <a href="{{ url_for('create_user') }}">Create User</a>
+    <ul>
+        {% for product in products %}
+            <li>
+                {{ product.name }} - {{ product.price }}
+                <a href="{{ url_for('update_product', product_id=product.id) }}">Update</a>
+                <form action="{{ url_for('delete_product', product_id=product.id) }}" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
