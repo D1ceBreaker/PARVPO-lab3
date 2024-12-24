@@ -1,0 +1,31 @@
+version: "3.0"
+services:
+  db:
+    container_name: "db"
+    image: postgres:14.1-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    expose:
+      - 5432
+
+
+  server:
+    build: server
+    container_name: "server"
+    ports:
+      - "7000:7000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@db:5432/postgres
+    depends_on:
+      - db
+
+  client:
+    build: client
+    ports:
+      - "5000:5000"
+    environment:
+      API_BASE_URL: http://server:7000
+    depends_on:
+      - server
